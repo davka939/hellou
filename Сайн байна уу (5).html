@@ -1,0 +1,1168 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Сайн байна уу</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@800&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: the whole page is one date-invitation card. A thin double frame in sky blue, purple, red and orange stays on screen through every scene. Scene 1 is the card front (kicker, particle greeting, self-destruct countdown), scene 2 the question, scene 3 the evening plan. */
+:root {
+  --ink: #0c0a1e;
+  --sky: #4cc9f0;
+  --purple: #9b5cff;
+  --red: #ff4d6d;
+  --orange: #ff9a3c;
+  --pearl: #f3f0ff;
+  --dust: #9a94c4;
+  --muted: #bcb6e0;
+  --rainbow: linear-gradient(90deg, #4cc9f0, #9b5cff, #ff4d6d, #ff9a3c);
+  --diag: linear-gradient(135deg, #4cc9f0, #9b5cff, #ff4d6d, #ff9a3c);
+  --warm: linear-gradient(90deg, #ff4d6d, #ff9a3c);
+  --display: 'Unbounded', 'Arial Black', system-ui, sans-serif;
+  --text: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body {
+  margin: 0;
+  padding-block: 0;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  background: var(--ink);
+  color: var(--pearl);
+  font-family: var(--text);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+#c {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+  cursor: crosshair;
+  z-index: 0;
+}
+h1 {
+  position: fixed;
+  inset: 0;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(2.4rem, 10vw, 6rem);
+  line-height: 1.14;
+  color: var(--pearl);
+  text-wrap: balance;
+  padding-left: max(36px, env(safe-area-inset-left, 0px));
+  padding-right: max(36px, env(safe-area-inset-right, 0px));
+}
+.live h1 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.grad {
+  background: var(--rainbow);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--orange);
+}
+
+/* Invitation frame, always on */
+.frame {
+  position: fixed;
+  z-index: 4;
+  pointer-events: none;
+  inset: calc(10px + env(safe-area-inset-top, 0px)) calc(10px + env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) calc(10px + env(safe-area-inset-left, 0px));
+}
+.frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1.5px;
+  background: var(--diag);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+.frame::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(155, 92, 255, 0.4);
+}
+.co {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--diag);
+  transform: rotate(45deg);
+}
+.co.tl { left: -5px; top: -5px; }
+.co.tr { right: -5px; top: -5px; }
+.co.bl { left: -5px; bottom: -5px; }
+.co.br { right: -5px; bottom: -5px; }
+
+/* Scene 1 card front */
+#intro {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  text-align: center;
+  transition: opacity 0.7s ease;
+}
+#intro.gone { opacity: 0; }
+.card-top {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(34px + env(safe-area-inset-top, 0px));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding-inline: 28px;
+}
+.kicker {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  background: var(--warm);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--orange);
+  padding-left: 0.34em;
+}
+.serial {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+.card-bot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(30px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  justify-content: center;
+}
+.ring {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  display: grid;
+  place-items: center;
+}
+.ring svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.ring .trk { fill: none; stroke: rgba(154, 148, 196, 0.3); stroke-width: 3; }
+.ring .arc {
+  fill: none;
+  stroke: url(#rg);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 163.36;
+  stroke-dashoffset: 0;
+}
+.ring.run .arc { animation: drain 5s linear forwards; }
+@keyframes drain { to { stroke-dashoffset: 163.36; } }
+.ring b {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--pearl);
+  font-variant-numeric: tabular-nums;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ring.run .arc { animation: none; }
+}
+
+/* Shared pill button */
+.btn {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.05rem;
+  line-height: 1;
+  padding: 1em 2.3em;
+  border-radius: 999px;
+  border: 2px solid var(--dust);
+  background: transparent;
+  color: var(--pearl);
+  cursor: pointer;
+}
+.btn.primary { background: var(--warm); border-color: transparent; color: var(--ink); }
+.btn.small { font-size: 0.85rem; padding: 0.95em 1.7em; }
+.btn:focus-visible, .node:focus-visible, .chip:focus-visible, a:focus-visible {
+  outline: 3px solid var(--sky);
+  outline-offset: 4px;
+}
+
+/* Scene 2 */
+#ask {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-block: 32px;
+  padding-left: max(30px, env(safe-area-inset-left, 0px));
+  padding-right: max(30px, env(safe-area-inset-right, 0px));
+  box-sizing: border-box;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.9s ease, visibility 0s 0.9s;
+}
+#ask.show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.9s ease 0.1s, visibility 0s;
+}
+#ask.answered {
+  justify-content: flex-end;
+  padding-bottom: max(5vh, 34px);
+}
+.stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(22px, 5vh, 44px);
+  min-width: 0;
+  max-width: 100%;
+}
+.q {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(1.15rem, 4.2vw, 2.3rem);
+  line-height: 1.35;
+  max-width: 19em;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+.q .date {
+  display: block;
+  width: fit-content;
+  margin: 0 auto 0.3em;
+  font-variant-numeric: tabular-nums;
+  font-size: 1.3em;
+  letter-spacing: 0.01em;
+  background: var(--rainbow);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--orange);
+}
+.btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+#yes {
+  transform: scale(var(--s, 1));
+  transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.4);
+}
+#no.flee {
+  position: fixed;
+  margin: 0;
+  z-index: 3;
+  background: var(--ink);
+  transition: left 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), top 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.ask-yes { display: none; }
+#ask.answered .ask-q { display: none; }
+#ask.answered .ask-yes { display: flex; }
+
+/* Scene 3 */
+#plan {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding-top: max(36px, env(safe-area-inset-top, 0px));
+  padding-bottom: max(36px, env(safe-area-inset-bottom, 0px));
+  padding-left: max(30px, env(safe-area-inset-left, 0px));
+  padding-right: max(30px, env(safe-area-inset-right, 0px));
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.8s ease, visibility 0s 0.8s;
+}
+#plan.show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.8s ease 0.5s, visibility 0s;
+}
+.plan-in {
+  box-sizing: border-box;
+  max-width: 640px;
+  min-height: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+}
+.eyebrow {
+  margin: 0 0 8px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--orange);
+  font-variant-numeric: tabular-nums;
+}
+.plan-title {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(1.15rem, 4vw, 1.6rem);
+  line-height: 1.3;
+  text-wrap: balance;
+}
+.plan-title:focus { outline: none; }
+
+.track {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+.track::before {
+  content: "";
+  position: absolute;
+  left: 12.5%;
+  right: 12.5%;
+  top: 9px;
+  height: 2px;
+  background: rgba(154, 148, 196, 0.3);
+}
+.fill {
+  position: absolute;
+  left: 12.5%;
+  top: 9px;
+  height: 2px;
+  width: 0;
+  background: linear-gradient(90deg, #4cc9f0, #9b5cff, #ff4d6d, #ff9a3c);
+  transition: width 0.6s ease;
+}
+.node {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--dust);
+  cursor: pointer;
+  border-radius: 8px;
+}
+.dot {
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 2px solid var(--dust);
+  transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+.node .t {
+  font-weight: 600;
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+}
+.node.past .dot { background: var(--purple); border-color: var(--purple); }
+.node.now .dot { background: var(--orange); border-color: var(--orange); box-shadow: 0 0 0 6px rgba(255, 154, 60, 0.2); }
+.node.now .t { color: var(--pearl); }
+
+.panel { display: none; min-width: 0; }
+.panel.on {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  animation: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+.time {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: baseline;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(3.2rem, 17vw, 6.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  background: var(--rainbow);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--orange);
+}
+.time i { font-style: normal; animation: blink 1.6s steps(2) infinite; }
+@keyframes blink { 50% { opacity: 0.3; } }
+.place {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(1.1rem, 4vw, 1.55rem);
+  line-height: 1.3;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+.desc {
+  margin: 0;
+  max-width: 46ch;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--muted);
+}
+.maplink {
+  align-self: flex-start;
+  font-weight: 600;
+  color: var(--sky);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.maplink:hover { color: var(--pearl); }
+
+.cd { display: flex; gap: 22px; }
+.cd .cell { display: flex; flex-direction: column; gap: 4px; }
+.cd b {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.7rem;
+  font-variant-numeric: tabular-nums;
+}
+.cd span, .label {
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dust);
+  font-weight: 600;
+}
+.cd-done { font-family: var(--display); font-weight: 800; color: var(--orange); }
+
+.hunger { display: flex; flex-direction: column; gap: 12px; max-width: 420px; }
+.hunger input[type="range"] { width: 100%; accent-color: var(--red); margin: 0; }
+.hunger output { font-size: 1.05rem; font-weight: 500; min-height: 1.6em; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip {
+  font-family: var(--text);
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 0.65em 1.15em;
+  border-radius: 999px;
+  border: 1.5px solid var(--dust);
+  background: transparent;
+  color: var(--pearl);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.chip:hover { border-color: var(--pearl); }
+.chip[aria-pressed="true"] { background: var(--pearl); color: var(--ink); border-color: var(--pearl); }
+.chip.shake { animation: shake 0.45s; border-color: var(--red); }
+@keyframes shake {
+  20% { transform: translateX(-7px) rotate(-3deg); }
+  40% { transform: translateX(7px) rotate(3deg); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+}
+.note { margin: 0; min-height: 1.6em; font-weight: 600; color: var(--orange); }
+
+.recap {
+  margin: 0;
+  padding: 4px 0 4px 18px;
+  border-left: 3px solid var(--purple);
+  font-family: var(--text);
+  font-size: 1rem;
+  line-height: 1.9;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-variant-numeric: tabular-nums;
+}
+.row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+
+.nav { display: flex; justify-content: space-between; gap: 14px; min-height: 52px; }
+#next { margin-left: auto; }
+
+.btn, .chip, .node { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.node::after { content: ""; position: absolute; inset: -10px -4px; }
+.hunger input[type="range"] { height: 32px; }
+@media (max-width: 520px) {
+  .nav {
+    position: sticky;
+    bottom: 22px;
+    padding-top: 18px;
+    background: linear-gradient(to top, var(--ink) 65%, rgba(12, 10, 30, 0));
+  }
+  .nav .btn { flex: 1 1 0; padding-block: 1.15em; }
+  .chip { padding: 0.8em 1.2em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #ask, #ask.show, #plan, #plan.show, #intro { transition: none; }
+  #yes, #no.flee, .fill { transition: none; }
+  .panel.on, .time i, .chip.shake { animation: none; }
+}
+</style>
+<canvas id="c" aria-hidden="true"></canvas>
+<h1 id="hello">оройн мэнд охин минь</h1>
+
+<div class="frame" aria-hidden="true"><i class="co tl"></i><i class="co tr"></i><i class="co bl"></i><i class="co br"></i></div>
+
+<div id="intro">
+  <footer class="card-bot">
+    <div class="ring" id="ring" role="timer" aria-label="Үлдсэн секунд">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <defs>
+          <linearGradient id="rg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#4cc9f0"/>
+            <stop offset="0.4" stop-color="#9b5cff"/>
+            <stop offset="0.7" stop-color="#ff4d6d"/>
+            <stop offset="1" stop-color="#ff9a3c"/>
+          </linearGradient>
+        </defs>
+        <circle class="trk" cx="32" cy="32" r="26"/>
+        <circle class="arc" cx="32" cy="32" r="26"/>
+      </svg>
+      <b id="sec">5</b>
+    </div>
+  </footer>
+</div>
+
+<main id="ask" aria-label="Урилга">
+  <div class="stack ask-q">
+    <p class="q" id="q"><span class="date">2026/11/11-ны</span>оройг хамт өнгөрүүлэхэд бэлэн үү?</p>
+    <div class="btns">
+      <button id="yes" class="btn primary" type="button">Тийм</button>
+      <button id="no" class="btn" type="button">Үгүй</button>
+    </div>
+  </div>
+  <div class="stack ask-yes" role="status">
+    <button id="go" class="btn primary small" type="button">Орой хэрхэн өнгөрөх вэ</button>
+  </div>
+</main>
+
+<section id="plan" aria-label="Оройн төлөвлөгөө">
+  <div class="plan-in">
+    <header>
+      <p class="eyebrow">2026/11/11 · Лхагва</p>
+      <h2 class="plan-title" id="plan-title" tabindex="-1">Орой яаж өнгөрөх вэ</h2>
+    </header>
+
+    <ol class="track" id="track">
+      <li class="fill" id="fill" aria-hidden="true"></li>
+      <li><button class="node" type="button" data-i="0" aria-label="17:30, уулзалт"><span class="dot"></span><span class="t">17:30</span></button></li>
+      <li><button class="node" type="button" data-i="1" aria-label="18:00, хоол"><span class="dot"></span><span class="t">18:00</span></button></li>
+      <li><button class="node" type="button" data-i="2" aria-label="19:00, кино"><span class="dot"></span><span class="t">19:00</span></button></li>
+      <li><button class="node" type="button" data-i="3" aria-label="20:40, чиний таалал дор"><span class="dot"></span><span class="t">20:40</span></button></li>
+    </ol>
+
+    <div class="stage" id="stage">
+      <article class="panel" data-i="0">
+        <div class="time" aria-label="17:30"><span>17</span><i>:</i><span>30</span></div>
+        <h3 class="place">ШУТИС 1-р байрны урд</h3>
+        <p class="desc">Эндээс эхэлнэ. Орой хүйтэн байх тул дулаан хувцаслаарай.</p>
+        <div>
+          <div class="label" style="margin-bottom:8px">Уулзахад үлдсэн</div>
+          <div class="cd" id="cd">
+            <div class="cell"><b id="cdh">00</b><span>цаг</span></div>
+            <div class="cell"><b id="cdm">00</b><span>мин</span></div>
+            <div class="cell"><b id="cds">00</b><span>сек</span></div>
+          </div>
+          <div class="cd-done" id="cdDone" hidden>Уулзалт эхэллээ</div>
+        </div>
+        <a class="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Mongolian+University+of+Science+and+Technology+Ulaanbaatar">Газрын зураг дээр харах →</a>
+      </article>
+
+      <article class="panel" data-i="1">
+        <div class="time" aria-label="18:00"><span>18</span><i>:</i><span>00</span></div>
+        <h3 class="place">Zoma Kitchen &amp; Bar</h3>
+        <p class="desc">Хамт хоол идэцгээнэ.</p>
+        <div class="hunger">
+          <label class="label" for="hunger">Хэр өлсөж байна?</label>
+          <input id="hunger" type="range" min="0" max="100" value="35">
+          <output id="hungerTxt" for="hunger" aria-live="polite">Бага сага.</output>
+        </div>
+        <a class="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Zoma+Kitchen+%26+Bar+Ulaanbaatar">Газрын зураг дээр харах →</a>
+      </article>
+
+      <article class="panel" data-i="2">
+        <div class="time" aria-label="19:00"><span>19:00</span></div>
+        <h3 class="place">Кино үзнэ</h3>
+        <p class="desc">Юу үзэхээ хамт шийднэ. Ямар төрөл таалагдах вэ?</p>
+        <div class="chips" data-group="movie">
+          <button class="chip" type="button" aria-pressed="false">Инээдмийн</button>
+          <button class="chip" type="button" aria-pressed="false">Романтик</button>
+          <button class="chip" type="button" aria-pressed="false">Адал явдалт</button>
+          <button class="chip" type="button" aria-pressed="false">Уран зөгнөлт</button>
+          <button class="chip" type="button" aria-pressed="false">Аль ч болно</button>
+        </div>
+        <p class="note" id="movieNote" aria-live="polite"></p>
+      </article>
+
+      <article class="panel" data-i="3">
+        <div class="time" aria-label="20:40"><span>20</span><i>:</i><span>40</span></div>
+        <h3 class="place">Чиний таалал дор</h3>
+        <p class="desc">Чи юу хүсэж байна, би тэрэнд нэгдэнэ. Гэхдээ уухгүйшүү тэ хаха.</p>
+        <div class="chips" data-group="late">
+          <button class="chip" type="button" aria-pressed="false">Алхалт</button>
+          <button class="chip" type="button" aria-pressed="false">Кофе / цай</button>
+          <button class="chip" type="button" aria-pressed="false">Караоке</button>
+          <button class="chip" type="button" aria-pressed="false">Бялуу</button>
+          <button class="chip" type="button" aria-pressed="false">Board game</button>
+          <button class="chip joke" type="button">Уух</button>
+        </div>
+        <p class="note" id="lateNote" aria-live="polite"></p>
+      </article>
+
+      <article class="panel" data-i="4">
+        <div class="time"><span>Бэлэн</span></div>
+        <p class="desc">Орой ингэж өнгөрнө. Сонголтоо хуулаад надад илгээгээрэй.</p>
+        <pre class="recap" id="recap"></pre>
+        <div class="row">
+          <button class="btn primary small" id="copy" type="button">Сонголтоо хуулах</button>
+          <button class="btn small" id="again" type="button">Эхнээс нь үзэх</button>
+        </div>
+        <p class="note" id="copyMsg" aria-live="polite"></p>
+      </article>
+    </div>
+
+    <div class="nav">
+      <button class="btn small" id="back" type="button" hidden>Буцах</button>
+      <button class="btn primary small" id="next" type="button">Дараагийнх</button>
+    </div>
+  </div>
+</section>
+
+<div id="sa" aria-hidden="true" style="position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)"></div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var cv = $('c'), ctx = cv.getContext('2d');
+  var root = document.documentElement;
+  var ask = $('ask'), yes = $('yes'), no = $('no'), qEl = $('q'), h1 = $('hello');
+  var plan = $('plan'), intro = $('intro');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var TAU = Math.PI * 2, NB = 24;
+  var W = 0, H = 0, dpr = 1, R = 100, lastW = 0, lastH = 0;
+  var parts = [], buckets = [], stars = [];
+  var ptr = { x: -9999, y: -9999 };
+  var lastUser = -1e9, last = 0;
+  var state = 'greet', pa = 1, leaveStart = 0, yesStart = 0;
+  var stops = [[76, 201, 240], [155, 92, 255], [255, 77, 109], [255, 154, 60], [76, 201, 240]];
+
+  function mix(u) {
+    u = ((u % 1) + 1) % 1;
+    var s = u * (stops.length - 1), i = Math.floor(s), f = s - i;
+    var a = stops[i], b = stops[i + 1];
+    return 'rgb(' + Math.round(a[0] + (b[0] - a[0]) * f) + ',' +
+      Math.round(a[1] + (b[1] - a[1]) * f) + ',' +
+      Math.round(a[2] + (b[2] - a[2]) * f) + ')';
+  }
+
+  function build() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    lastW = W; lastH = H;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    R = Math.min(130, Math.max(80, W * 0.1));
+
+    var gutter = Math.max(38, W * 0.08);
+    var lines = W < 640 ? ['оройн', 'мэнд', 'охин', 'минь'] : ['оройн мэнд', 'охин минь'];
+    var off = document.createElement('canvas');
+    off.width = W; off.height = H;
+    var o = off.getContext('2d');
+    var face = "800 100px Unbounded,'Arial Black',sans-serif";
+    o.font = face;
+    var maxw = 0;
+    lines.forEach(function (l) { maxw = Math.max(maxw, o.measureText(l).width); });
+    var lh = 1.14;
+    var size = Math.min(100 * (W - 2 * gutter) / maxw, (H * 0.6) / (lines.length * lh));
+    o.font = face.replace('100px', size + 'px');
+    o.textAlign = 'center'; o.textBaseline = 'middle'; o.fillStyle = '#fff';
+    lines.forEach(function (l, i) {
+      o.fillText(l, W / 2, H / 2 + (i - (lines.length - 1) / 2) * size * lh);
+    });
+    var data = o.getImageData(0, 0, W, H).data;
+
+    var step = Math.max(3, Math.round(size / 40)), pts;
+    function sample(st) {
+      var out = [];
+      for (var y = 0; y < H; y += st) {
+        for (var x = 0; x < W; x += st) {
+          if (data[((y | 0) * W + (x | 0)) * 4 + 3] > 128) out.push({ x: x, y: y });
+        }
+      }
+      return out;
+    }
+    pts = sample(step);
+    var cap = W < 640 ? 5000 : 9000;
+    while (pts.length > cap) { step += 1; pts = sample(step); }
+
+    var minx = 1e9, maxx = -1e9;
+    pts.forEach(function (q) { if (q.x < minx) minx = q.x; if (q.x > maxx) maxx = q.x; });
+    var span = (maxx - minx) || 1;
+
+    parts = []; buckets = [];
+    for (var k = 0; k < NB; k++) buckets.push([]);
+    pts.forEach(function (q) {
+      var hx = q.x + (Math.random() - 0.5) * step * 0.6;
+      var hy = q.y + (Math.random() - 0.5) * step * 0.6;
+      var b = Math.min(NB - 1, Math.floor(((q.x - minx) / span) * NB));
+      var p = {
+        x: reduce ? hx : Math.random() * W,
+        y: reduce ? hy : Math.random() * H,
+        vx: 0, vy: 0, hx: hx, hy: hy,
+        k: 0.012 + Math.random() * 0.012,
+        ph: Math.random() * TAU,
+        r: step * (0.34 + Math.random() * 0.14)
+      };
+      parts.push(p);
+      buckets[b].push(p);
+    });
+
+    stars = [];
+    var ns = Math.min(220, Math.round(W * H / 9000));
+    for (var s = 0; s < ns; s++) {
+      stars.push({
+        x: Math.random() * W, y: Math.random() * H,
+        r: 0.6 + Math.random() * 1.1,
+        a: 0.15 + Math.random() * 0.4,
+        s: 0.4 + Math.random() * 1.2,
+        p: Math.random() * TAU
+      });
+    }
+    root.classList.add('live');
+  }
+
+  function draw(now) {
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = reduce ? 'rgb(12,10,30)' : 'rgba(12,10,30,0.3)';
+    ctx.fillRect(0, 0, W, H);
+    for (var i = 0; i < stars.length; i++) {
+      var st = stars[i];
+      var a = reduce ? st.a : st.a * (0.55 + 0.45 * Math.sin(now * 0.001 * st.s + st.p));
+      ctx.fillStyle = 'rgba(170,160,215,' + a.toFixed(3) + ')';
+      ctx.fillRect(st.x, st.y, st.r, st.r);
+    }
+    if (pa < 0.01) return;
+    ctx.globalAlpha = pa;
+    var shift = now * 0.00002;
+    for (var b = 0; b < NB; b++) {
+      var arr = buckets[b];
+      if (!arr.length) continue;
+      ctx.fillStyle = mix(b / NB + shift);
+      ctx.beginPath();
+      for (var j = 0; j < arr.length; j++) {
+        var p = arr[j];
+        ctx.moveTo(p.x + p.r, p.y);
+        ctx.arc(p.x, p.y, p.r, 0, TAU);
+      }
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function frame(now) {
+    requestAnimationFrame(frame);
+    var dt = Math.min(2.5, (now - last) / 16.67 || 1);
+    last = now;
+
+    if (state === 'leave') {
+      pa = Math.max(0, 1 - (now - leaveStart) / 900);
+      if (pa === 0) state = 'ask';
+    } else if (state === 'yes') {
+      pa = Math.min(1, (now - yesStart) / 700);
+    }
+
+    if (state !== 'ask') {
+      var px = ptr.x, py = ptr.y, pr = 0;
+      if (now - lastUser < 5000) {
+        pr = R;
+      } else if (state === 'greet' && now > 2800) {
+        px = W / 2 + Math.sin(now * 0.00045) * W * 0.38;
+        py = H / 2 + Math.sin(now * 0.0009) * H * 0.1;
+        pr = R;
+      }
+      var damp = Math.pow(state === 'leave' ? 0.97 : 0.88, dt);
+      var tt = now * 0.0014;
+      for (var i = 0; i < parts.length; i++) {
+        var p = parts[i];
+        var tx = p.hx + Math.sin(tt + p.ph) * 1.1;
+        var ty = p.hy + Math.cos(tt * 0.9 + p.ph) * 1.1;
+        var ax = (tx - p.x) * p.k, ay = (ty - p.y) * p.k;
+        if (pr) {
+          var dx = p.x - px, dy = p.y - py, d2 = dx * dx + dy * dy;
+          if (d2 < pr * pr && d2 > 0.01) {
+            var d = Math.sqrt(d2), f = 1 - d / pr;
+            ax += (dx / d) * f * f * 1.8;
+            ay += (dy / d) * f * f * 1.8;
+          }
+        }
+        p.vx = (p.vx + ax * dt) * damp;
+        p.vy = (p.vy + ay * dt) * damp;
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+      }
+    }
+    draw(now);
+  }
+
+  function burst(x, y) {
+    for (var i = 0; i < parts.length; i++) {
+      var p = parts[i];
+      var dx = p.x - x, dy = p.y - y, d = Math.sqrt(dx * dx + dy * dy) || 1;
+      if (d < 340) {
+        var f = 1 - d / 340;
+        p.vx += (dx / d) * f * 22 + (-dy / d) * f * 8;
+        p.vy += (dy / d) * f * 22 + (dx / d) * f * 8;
+      }
+    }
+  }
+
+  function scatter(cx, cy) {
+    for (var i = 0; i < parts.length; i++) {
+      var p = parts[i];
+      var dx = p.x - cx, dy = p.y - cy, d = Math.sqrt(dx * dx + dy * dy) || 1;
+      var sp = 4 + Math.random() * 11;
+      p.k = 0;
+      p.vx += (dx / d) * sp;
+      p.vy += (dy / d) * sp;
+    }
+  }
+
+  /* Scene 1 to 2: the card front dissolves, the question appears */
+  function leave() {
+    if (state !== 'greet') return;
+    h1.hidden = true;
+    intro.classList.add('gone');
+    ask.classList.add('show');
+    if (reduce) { state = 'ask'; pa = 0; draw(0); return; }
+    state = 'leave';
+    leaveStart = performance.now();
+    scatter(W / 2, H / 2);
+  }
+
+  /* Yes: particles gather into a heart */
+  function heartTargets(snap, ox, oy) {
+    var s = Math.min(W * 0.26, H * 0.17), cx = W / 2, cy = H * 0.4;
+    var left = cx - 1.3 * s, wid = 2.6 * s;
+    for (var k = 0; k < NB; k++) buckets[k] = [];
+    parts.forEach(function (p) {
+      var x, y, a, ok = false, tries = 0;
+      do {
+        x = Math.random() * 2.6 - 1.3;
+        y = Math.random() * 2.6 - 1.3;
+        a = x * x + y * y - 1;
+        ok = a * a * a - x * x * y * y * y <= 0;
+        tries++;
+      } while (!ok && tries < 200);
+      p.hx = cx + x * s;
+      p.hy = cy - y * s;
+      p.k = 0.02 + Math.random() * 0.012;
+      if (snap) {
+        p.x = p.hx; p.y = p.hy; p.vx = 0; p.vy = 0;
+      } else {
+        var ang = Math.random() * TAU, sp = 6 + Math.random() * 14;
+        p.x = ox + Math.cos(ang) * 6; p.y = oy + Math.sin(ang) * 6;
+        p.vx = Math.cos(ang) * sp; p.vy = Math.sin(ang) * sp;
+      }
+      var b = Math.max(0, Math.min(NB - 1, Math.floor(((p.hx - left) / wid) * NB)));
+      buckets[b].push(p);
+    });
+  }
+
+  yes.addEventListener('click', function () {
+    var r = yes.getBoundingClientRect();
+    var ox = r.left + r.width / 2, oy = r.top + r.height / 2;
+    ask.classList.add('answered');
+    state = 'yes';
+    yesStart = performance.now();
+    if (reduce) {
+      heartTargets(true); pa = 1; draw(0);
+    } else {
+      pa = 0;
+      heartTargets(false, ox, oy);
+    }
+  });
+
+  /* No: runs away to a new place every time */
+  var fled = false, lp = null, lastDodge = 0, dodges = 0;
+  function inflate(r, m) {
+    return { left: r.left - m, top: r.top - m, right: r.right + m, bottom: r.bottom + m };
+  }
+  function hit(a, b) {
+    return !(a.right < b.left || a.left > b.right || a.bottom < b.top || a.top > b.bottom);
+  }
+  function dodge() {
+    var now = performance.now();
+    if (now - lastDodge < 150) return;
+    lastDodge = now;
+    var r = no.getBoundingClientRect();
+    var w = r.width, h = r.height;
+    if (!fled) {
+      fled = true;
+      var ph = document.createElement('span');
+      ph.style.cssText = 'display:inline-block;width:' + w + 'px;height:' + h + 'px';
+      no.parentNode.insertBefore(ph, no);
+      no.classList.add('flee');
+      no.style.left = r.left + 'px';
+      no.style.top = r.top + 'px';
+      void no.offsetWidth;
+    }
+    dodges++;
+    yes.style.setProperty('--s', Math.min(1.45, 1 + dodges * 0.05).toFixed(2));
+
+    var mx = 30, my = 34;
+    var cs = window.getComputedStyle($('sa'));
+    var sat = parseFloat(cs.paddingTop) || 0, sab = parseFloat(cs.paddingBottom) || 0;
+    var avoidA = inflate(yes.getBoundingClientRect(), 20);
+    var avoidB = inflate(qEl.getBoundingClientRect(), 10);
+    var cx0 = r.left + w / 2, cy0 = r.top + h / 2;
+    var best = null, bestScore = -1;
+    for (var i = 0; i < 70; i++) {
+      var x = mx + Math.random() * Math.max(1, W - w - 2 * mx);
+      var y = my + sat + Math.random() * Math.max(1, H - h - 2 * my - sat - sab);
+      var box = { left: x, top: y, right: x + w, bottom: y + h };
+      var cx = x + w / 2, cy = y + h / 2;
+      var dp = lp ? Math.hypot(cx - lp.x, cy - lp.y) : 999;
+      var dc = Math.hypot(cx - cx0, cy - cy0);
+      var clear = !hit(box, avoidA) && !hit(box, avoidB);
+      if (clear && dp >= 180 && dc >= 140) { best = { x: x, y: y }; break; }
+      var score = (clear ? 1000 : 0) + Math.min(dp, dc);
+      if (score > bestScore) { bestScore = score; best = { x: x, y: y }; }
+    }
+    no.style.left = best.x + 'px';
+    no.style.top = best.y + 'px';
+  }
+  no.addEventListener('pointerenter', dodge);
+  no.addEventListener('pointerdown', function (e) { e.preventDefault(); dodge(); });
+  no.addEventListener('click', function (e) { e.preventDefault(); dodge(); });
+
+  window.addEventListener('pointermove', function (e) {
+    ptr.x = e.clientX; ptr.y = e.clientY; lastUser = performance.now();
+    lp = { x: e.clientX, y: e.clientY };
+    if (e.pointerType !== 'touch' && state !== 'greet' && ask.classList.contains('show') && !ask.classList.contains('answered')) {
+      var r = no.getBoundingClientRect();
+      var d = Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2));
+      if (d < Math.max(r.width, r.height) * 0.9) dodge();
+    }
+  });
+  window.addEventListener('pointerdown', function (e) {
+    ptr.x = e.clientX; ptr.y = e.clientY; lastUser = performance.now();
+    lp = { x: e.clientX, y: e.clientY };
+    if (!reduce && state === 'greet') burst(e.clientX, e.clientY);
+  });
+  window.addEventListener('pointerup', function (e) {
+    if (e.pointerType === 'touch') { ptr.x = -9999; ptr.y = -9999; }
+  });
+  document.addEventListener('pointerleave', function () { ptr.x = -9999; ptr.y = -9999; });
+
+  /* ---------- Scene 3: the evening plan ---------- */
+  var panels = [].slice.call(document.querySelectorAll('.panel'));
+  var nodes = [].slice.call(document.querySelectorAll('.node'));
+  var fill = $('fill'), back = $('back'), next = $('next');
+  var cur = 0, ticking = 0;
+  var picks = { movie: null, late: null };
+  var target = Date.parse('2026-11-11T17:30:00+08:00');
+
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+  function tick() {
+    var ms = target - Date.now();
+    if (ms <= 0) {
+      $('cd').hidden = true; $('cdDone').hidden = false;
+      return;
+    }
+    var s = Math.floor(ms / 1000);
+    $('cdh').textContent = pad(Math.floor(s / 3600));
+    $('cdm').textContent = pad(Math.floor((s % 3600) / 60));
+    $('cds').textContent = pad(s % 60);
+  }
+
+  function renderRecap() {
+    var hv = $('hunger').value;
+    var lines = [
+      '2026/11/11 · Лхагва',
+      '17:30 — ШУТИС 1-р байрны урд',
+      '18:00 — Zoma Kitchen & Bar (өлсгөлөн ' + hv + '%)',
+      '19:00 — Кино: ' + (picks.movie || 'чи шийд'),
+      '20:40 — ' + (picks.late || 'чиний таалал дор') + ' (уухгүй шүү)'
+    ];
+    $('recap').textContent = lines.join('\n');
+  }
+
+  function show(i) {
+    cur = Math.max(0, Math.min(panels.length - 1, i));
+    panels.forEach(function (p, k) { p.classList.toggle('on', k === cur); });
+    nodes.forEach(function (n, k) {
+      n.classList.toggle('now', k === cur);
+      n.classList.toggle('past', k < cur || cur === 4);
+      if (k === cur) n.setAttribute('aria-current', 'step'); else n.removeAttribute('aria-current');
+    });
+    fill.style.width = (Math.min(cur, 3) / 3 * 75) + '%';
+    back.hidden = cur === 0;
+    next.hidden = cur === 4;
+    next.textContent = cur === 3 ? 'Дуусгах' : 'Дараагийнх';
+    $('copyMsg').textContent = '';
+    if (cur === 4) renderRecap();
+    plan.scrollTop = 0;
+  }
+
+  nodes.forEach(function (n) {
+    n.addEventListener('click', function () { show(parseInt(n.getAttribute('data-i'), 10)); });
+  });
+  back.addEventListener('click', function () { show(cur - 1); });
+  next.addEventListener('click', function () { show(cur + 1); });
+  $('again').addEventListener('click', function () { show(0); });
+
+  var hungerTxt = $('hungerTxt');
+  function hungerText(v) {
+    if (v <= 20) return 'Дөнгөж идсэн юм уу?';
+    if (v <= 50) return 'Бага сага.';
+    if (v <= 80) return 'Өлсөж байна, хурдан явъя.';
+    return 'Хонь бүтнээр нь идэхээр байна.';
+  }
+  $('hunger').addEventListener('input', function (e) {
+    hungerTxt.textContent = hungerText(parseInt(e.target.value, 10));
+  });
+
+  [].forEach.call(document.querySelectorAll('.chips'), function (group) {
+    var key = group.getAttribute('data-group');
+    var note = key === 'movie' ? $('movieNote') : $('lateNote');
+    var chips = [].slice.call(group.querySelectorAll('.chip'));
+    chips.forEach(function (c) {
+      c.addEventListener('click', function () {
+        if (c.classList.contains('joke')) {
+          c.classList.remove('shake');
+          void c.offsetWidth;
+          c.classList.add('shake');
+          note.textContent = 'Уухгүйшүү тэ хаха.';
+          return;
+        }
+        chips.forEach(function (o) { o.setAttribute('aria-pressed', o === c ? 'true' : 'false'); });
+        picks[key] = c.textContent;
+        note.textContent = 'Сонголт: ' + c.textContent;
+      });
+    });
+  });
+
+  $('copy').addEventListener('click', function () {
+    var el = $('recap'), msg = $('copyMsg');
+    function ok() { msg.textContent = 'Хууллаа. Одоо илгээж болно.'; }
+    function fail() {
+      var rg = document.createRange();
+      rg.selectNodeContents(el);
+      var sel = window.getSelection();
+      sel.removeAllRanges(); sel.addRange(rg);
+      msg.textContent = 'Сонгогдлоо. Хуулж аваарай.';
+    }
+    try {
+      navigator.clipboard.writeText(el.textContent).then(ok, fail);
+    } catch (err) { fail(); }
+  });
+
+  var sx = 0, sy = 0;
+  $('stage').addEventListener('touchstart', function (e) {
+    sx = e.changedTouches[0].clientX; sy = e.changedTouches[0].clientY;
+  }, { passive: true });
+  $('stage').addEventListener('touchend', function (e) {
+    var dx = e.changedTouches[0].clientX - sx;
+    var dy = e.changedTouches[0].clientY - sy;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) show(cur + (dx < 0 ? 1 : -1));
+  }, { passive: true });
+  document.addEventListener('keydown', function (e) {
+    if (!plan.classList.contains('show')) return;
+    if (e.target && e.target.tagName === 'INPUT') return;
+    if (e.key === 'ArrowRight') show(cur + 1);
+    if (e.key === 'ArrowLeft') show(cur - 1);
+  });
+
+  $('go').addEventListener('click', function () {
+    ask.classList.remove('show');
+    plan.classList.add('show');
+    show(0);
+    tick();
+    if (!ticking) ticking = setInterval(tick, 1000);
+    try { $('plan-title').focus({ preventScroll: true }); } catch (err) {}
+    if (reduce) { pa = 0; draw(0); return; }
+    state = 'leave';
+    leaveStart = performance.now();
+    scatter(W / 2, H * 0.4);
+  });
+
+  var rt = 0;
+  window.addEventListener('resize', function () {
+    clearTimeout(rt);
+    rt = setTimeout(function () {
+      if (window.innerWidth === lastW && Math.abs(window.innerHeight - lastH) < 160) return;
+      build();
+      if (state === 'yes') { heartTargets(true); pa = 1; }
+      else if (state !== 'greet') { state = 'ask'; pa = 0; }
+      if (reduce) draw(0);
+    }, 150);
+  });
+
+  function start() {
+    build();
+    if (reduce) draw(0); else requestAnimationFrame(frame);
+    var t0 = performance.now(), secEl = $('sec');
+    $('ring').classList.add('run');
+    var ci = setInterval(function () {
+      var left = Math.max(1, Math.ceil((5000 - (performance.now() - t0)) / 1000));
+      secEl.textContent = left;
+      if (state !== 'greet') clearInterval(ci);
+    }, 200);
+    setTimeout(leave, 5000);
+  }
+
+  var done = false;
+  function go() { if (done) return; done = true; start(); }
+  try {
+    Promise.race([
+      document.fonts.load("800 100px Unbounded", "оройн мэнд охин минь"),
+      new Promise(function (r) { setTimeout(r, 2500); })
+    ]).then(go, go);
+  } catch (err) { go(); }
+})();
+</script>
+
+</body></html>
